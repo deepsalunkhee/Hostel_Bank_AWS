@@ -6,20 +6,19 @@ const zod = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const {verifyUser} = require("../Routes/auth");
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 const salt = bcrypt.genSaltSync(saltRounds);
 
-// console.log(JWT_SECRET);
-// console.log(saltRounds);
+
 
 //data validation schema
 const signupSchema = zod.object({
-  name: zod.string().min(3).max(50),
   email: zod.string().email(),
-  password: zod.string().min(6).max(50),
+  password: zod.string().min(4).max(50),
 });
 
 const signinSchema = zod.object({
@@ -30,30 +29,39 @@ const signinSchema = zod.object({
 //signup route
 
 router.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
+  console.log(req.body);
 
-  //validate the data
-  
+  // Validate the data
+  try {
     const validatedData = signupSchema.parse(req.body);
- 
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid data" });
+  }
 
-  //create new user
-  if (validatedData) {
-    const newUser = new User({
-      name,
-      email,
-      passwordHash: bcrypt.hashSync(password, salt),
-    });
+  // Check if the user already exists
+  const existingUser = await User.findOne({ email: email });
+  
+  if (existingUser) {
+    console.log("User already exists");
+    return res.status(400).json({ error: "User already exists" });
+  }
 
-    //save the user
-    try {
-      const savedUser = await newUser.save();
-      res.json({ message: "User created successfully" });
-    } catch (error) {
-      res.status(400).json({ error: error });
-    }
-  }else{
-      res.status(400).json({error:"Invalid data"});
+  // Hash the password
+  const hashedPassword = bcrypt.hashSync(password, salt);
+
+  // Create a new user
+  const newUser = new User({
+    email: email,
+    passwordHash: hashedPassword,
+  });
+
+  // Save the user to the database
+  try {
+    const savedUser = await newUser.save();
+    res.status(200).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -80,11 +88,12 @@ router.post("/signin",async(req,res)=>{
             }
 
             //sign the token
-            const token=jwt.sign({id:user._id},JWT_SECRET);
+            const token=jwt.sign({id:user._id,email:email},JWT_SECRET);
             res.json({token:token});
             
             
         } catch (error) {
+            res.status(500).json({error:"Internal server error"});
             
         }
     }else{
@@ -92,6 +101,14 @@ router.post("/signin",async(req,res)=>{
     }
 
 
+})
+
+router.get("/userdata",verifyUser,async(req,res)=>{
+    const user=await User.findOne({email:req.user});
+    console.log("hi");
+    res.json({email:user.email});
+  
+   
 })
 
 module.exports = router;
