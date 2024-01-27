@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db/connection');
+const UserRouter = require('./Routes/users');
+
+
 
 
 const app = express();
@@ -11,6 +14,9 @@ app.use(express.json());
 connectDB();
 
 // Routes
+
+// Users
+app.use('/users', UserRouter );
 
 
 
