@@ -9,4 +9,3 @@ const JoinGroup = () => {
 }
 
 export default JoinGroup
-<h1
