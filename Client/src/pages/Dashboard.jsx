@@ -38,7 +38,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       
       <Navbar user={userData.email} />
       <Navigator/>
