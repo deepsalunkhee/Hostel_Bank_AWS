@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db/connection');
 const UserRouter = require('./Routes/users');
+const GroupRouter=require('./Routes/groups')
 
 
 
@@ -17,7 +18,7 @@ connectDB();
 
 // Users
 app.use('/users', UserRouter );
-
+app.use('/groups',GroupRouter);
 
 
 
