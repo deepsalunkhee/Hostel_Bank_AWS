@@ -2,11 +2,14 @@ const express = require('express');
 const { Group,User } = require('../db/schema');
 const { models } = require('mongoose');
 const router =express.Router();
+const {verifyUser}=require('../Routes/auth')
+
+
 
 
 //creating groups
 
-router.post('/create', async (req,res)=>{
+router.post('/create',verifyUser,async (req,res)=>{
     const {Groupname,creater}=req.body;
     console.log(req.body);
     const newGroup=new Group({
@@ -26,12 +29,21 @@ router.post('/create', async (req,res)=>{
         });
         const updated=await user.save()
         
-        res.status(200).json("Group Created");
+        res.status(200).json({
+            message:"Group created successfully",
+            GroupCode:savedGroup._id
+        });
     } catch (error) {
         res.status(400).json(error)
     }
 
 
+})
+
+//get the user's groups
+
+router.get('/getgroups',verifyUser, async (req,res)=>{
+        
 })
 
 

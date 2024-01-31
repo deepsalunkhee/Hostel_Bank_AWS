@@ -31,6 +31,9 @@ const Dashboard = () => {
         setUserData({
           email: getuserdata.data.email,
         });
+
+        //saving user email in local storage
+        localStorage.setItem("email", getuserdata.data.email);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
