@@ -5,7 +5,7 @@ dotenv.config();
 // Middleware function to verify user token
 const verifyUser = (req, res, next) => {
     const token = req.header("token");
-    // console.log(token);
+    //  console.log(token);
     if (!token) {
         return res.status(401).json({ error: "Please login" });
     }
