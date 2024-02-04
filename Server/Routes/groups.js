@@ -49,4 +49,41 @@ router.post("/getgroups", verifyUser, async (req, res) => {
   }
 });
 
+//join group
+
+router.post("/joingroup", verifyUser, async (req, res) => {
+  const { groupid } = req.body;
+  try {
+    const group = await Group.findById(groupid);
+    if (group == null) {
+      res.status(207).json({ message: "Group not found" });
+      console.log("Group not found");
+    }
+
+    const user = await User.findOne({ email: req.user });
+
+    const userUpdates= user.groups.push({
+      group_id: group._id,
+      group_name: group.name,
+    })
+
+    const groupUpdates = group.users.push({
+      email:req.user
+    })
+
+    //saving the updates
+    const updatedUser = await user.save();
+    const updatedGroup = await group.save();
+
+    res.status(200).json({ message: "Group joined successfully",groupname:group.name });
+    
+
+
+
+  } catch (error) {
+
+    res.status(400).json({ message: "Something went wrong on server" });
+  }
+});
+
 module.exports = router;
