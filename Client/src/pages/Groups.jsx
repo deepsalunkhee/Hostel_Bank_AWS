@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
   const [groups, setGroups] = useState([]);
   const backendUrl = "http://localhost:5000";
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchdata();
@@ -12,8 +14,7 @@ const Groups = () => {
   const fetchdata = async () => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
-    console.log(email);
-    console.log(token);
+  
     try {
       const getgroups = await axios(`${backendUrl}/groups/getgroups`, {
         method: "POST",
@@ -33,7 +34,7 @@ const Groups = () => {
   };
 
   const clickGroup = (e) => {
-    
+    navigate(`/group`);
   }
   return (
     <div className="p-4">
