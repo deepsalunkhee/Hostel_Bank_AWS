@@ -33,8 +33,8 @@ const Groups = () => {
     }
   };
 
-  const clickGroup = (e) => {
-    navigate(`/group`);
+  const clickGroup = (groupid) => {
+    navigate(`/group/${groupid}`);
   }
   return (
     <div className="p-4">
@@ -45,7 +45,7 @@ const Groups = () => {
             key={group.group_id}
             className="bg-yellow-50 p-4 rounded-lg shadow-md flex  flex-row justify-between "
           >
-            <h1 className="text-xl font-bold mb-2 hover:cursor-pointer" onClick={clickGroup}>{group.group_name}</h1>
+            <h1 className="text-xl font-bold mb-2 hover:cursor-pointer" onClick={()=>clickGroup(group.group_id)} >{group.group_name}</h1>
             <h1 className="text-lg flex items-center">
               {group.group_id}
               <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded font-thin ml-2"

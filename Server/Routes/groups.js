@@ -86,4 +86,18 @@ router.post("/joingroup", verifyUser, async (req, res) => {
   }
 });
 
+//get group info
+
+router.get("/getgroupinfo",verifyUser,async(req,res)=>{
+  const groupid =req.header("groupid");;
+  console.log(groupid);
+  try {
+    const groupinfo=await Group.findById({_id:groupid});
+    console.log(groupinfo);
+    res.status(200).json(groupinfo);
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 module.exports = router;
