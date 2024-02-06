@@ -43,8 +43,22 @@ const groupSchema = new mongoose.Schema({
         email: {
             type: String,
             required: true
+        },
+        member_id:{
+            type:Number,
+            required:true
         }
-    }]
+       
+    }],
+    member_count:{
+        type:Number,
+        required:true
+    },
+    transction_matrix:{
+        type:[[Number]],
+        required:true,
+    }
+    
 });
 
 

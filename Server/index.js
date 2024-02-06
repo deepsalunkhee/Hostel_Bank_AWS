@@ -3,6 +3,7 @@ const cors = require('cors');
 const connectDB = require('./db/connection');
 const UserRouter = require('./Routes/users');
 const GroupRouter=require('./Routes/groups')
+const TransactionRouter=require('./Routes/transaction')
 
 
 
@@ -19,6 +20,8 @@ connectDB();
 // Users
 app.use('/users', UserRouter );
 app.use('/groups',GroupRouter);
+app.use('/transaction',TransactionRouter);
+
 
 
 
