@@ -3,6 +3,7 @@ import CreateGroup from "./CreateGroup";
 import JoinGroup from "./JoinGroup";
 import Profile from "./Profile";
 import Groups from "./Groups";
+import History from "./History";
 
 const Navigator = () => {
   const [selectedMenu, setSelectedMenu] = useState("Notifications");
