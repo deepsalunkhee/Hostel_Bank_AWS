@@ -2,7 +2,7 @@ const express = require("express");
 const { Group, User } = require("../db/schema");
 const { models } = require("mongoose");
 const router = express.Router();
-const { verifyUser } = require("../Routes/auth");
+const { verifyUser,AutheriseUser } = require("../Routes/auth");
 
 //creating groups
 
