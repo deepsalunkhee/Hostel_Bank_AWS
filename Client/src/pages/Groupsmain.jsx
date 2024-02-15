@@ -9,13 +9,10 @@ const Groupsmain = ({ groupid }) => {
   const [currUser, setCurrUser] = useState(localStorage.getItem("email"));
   const [user_index_map, setUserIndexMap] = useState({});
   const [transactionMatrix, setTransactionMatrix] = useState([[]]);
-  const [requestMoney, setRequestMoney] = useState(0);
 
   useEffect(() => {
     fetchdata();
   }, []);
-
-  useEffect(() => {}, [transactionMatrix]);
 
   const fetchdata = async () => {
     const token = localStorage.getItem("token");
@@ -29,6 +26,7 @@ const Groupsmain = ({ groupid }) => {
           "Content-Type": "application/json",
           token: token,
           groupid: groupId,
+          user: email,
         },
       });
 
@@ -60,14 +58,86 @@ const Groupsmain = ({ groupid }) => {
     } catch (error) {}
   };
 
-  const RequestMoney = async (from, to, groupid, amount) => {
+  const RequestMoney = async (from, to, groupid, amount, note) => {
     //chek if ampunt is a number
-    if (isNaN(amount)) {
-      alert("Please enter a valid amount");
+    if (isNaN(amount) || amount <= 0 || amount === "" || note === "") {
+      alert("Please enter a valid amount and Note");
       return;
     }
 
-    alert(" ready to send request");
+    const token = localStorage.getItem("token");
+
+    const request = await axios(`${baseUrl}/transaction/request`, {
+      method: "POST",
+      headers: {
+        " constent-type": "application/json",
+        token: token,
+      },
+      data: {
+        groupid: groupid,
+        requestfrom: from,
+        requestto: to,
+        amount: amount,
+        note: note,
+      },
+    });
+
+    if (request.status === 200) {
+      alert(request.data.message);
+      fetchdata();
+      //sending notification logic
+      try {
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleSettle = async (from, to, groupid, amount, type) => {
+    //chek if ampunt is a number
+    if (amount === 0) {
+      alert("Nothing to settle");
+      return;
+    }
+    const confirmed = window.confirm("Are you sure you want to proceed?");
+
+    // Check if user confirmed
+    if (confirmed) {
+      // User agreed, proceed with action
+      const token = localStorage.getItem("token");
+      try {
+        const settle = await axios(`${baseUrl}/transaction/settle`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+          data: {
+            groupid: groupid,
+            requestfrom: from,
+            requestto: to,
+            amount: amount,
+            type: type,
+          },
+        });
+
+        if (settle.status === 200) {
+          fetchdata();
+          //sending notification logic
+          try {
+            
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          alert("Something went wrong");
+        }
+      } catch (error) {}
+    } else {
+      // User did not agree, handle accordingly
+      console.log("User did not agree");
+    }
   };
 
   return (
@@ -95,7 +165,20 @@ const Groupsmain = ({ groupid }) => {
                       ]
                     }
                   </span>
-                  <button className="ml-2 px-2 py-1 bg-blue-500 text-white rounded">
+                  <button
+                    className="ml-2 px-2 py-1 bg-blue-500 text-white rounded"
+                    onClick={() => {
+                      handleSettle(
+                        currUser,
+                        user.email,
+                        groupId,
+                        transactionMatrix[user_index_map[currUser]][
+                          user_index_map[user.email]
+                        ],
+                        "toGive"
+                      );
+                    }}
+                  >
                     Settle
                   </button>
                 </div>
@@ -109,7 +192,20 @@ const Groupsmain = ({ groupid }) => {
                       ]
                     }
                   </span>
-                  <button className="ml-2 px-2 py-1 bg-blue-500 text-white rounded">
+                  <button
+                    className="ml-2 px-2 py-1 bg-blue-500 text-white rounded"
+                    onClick={() => {
+                      handleSettle(
+                        currUser,
+                        user.email,
+                        groupId,
+                        transactionMatrix[user_index_map[user.email]][
+                          user_index_map[currUser]
+                        ],
+                        "toTake"
+                      );
+                    }}
+                  >
                     Settle
                   </button>
                 </div>
@@ -117,21 +213,23 @@ const Groupsmain = ({ groupid }) => {
 
               {currUser === user.email ? (
                 <td className="border border-blue-500 py-2 px-4">
-                  {/*place this in center*/ }
+                  {/*place this in center*/}
                   <div className="flex flex-row justify-around">
-                  <span>
-                    My Account
-                  </span>
-                </div>
-                 
-                  
+                    <span>My Account</span>
+                  </div>
                 </td>
               ) : (
-                <td className="border border-blue-500 py-2 px-4">
+                <td className="border border-blue-500 py-2 px-1">
                   <div className="flex flex-row justify-around">
                     <input
-                      className="py-1 border border-gray-300 rounded text-sm" // Removed px-2 and reduced font size
+                      className="py-1 border border-gray-300 rounded text-sm p-1" // Removed px-2 and reduced font size
                       id={`amountInput-${index}`}
+                      placeholder="Rs"
+                    />
+                    <input
+                      className="py-1 border border-gray-300 rounded text-sm p-1" // Removed px-2 and reduced font size
+                      id={`ForInput-${index}`}
+                      placeholder="Note"
                     />
                     <button
                       className="ml-2 px-2 py-1 bg-blue-500 text-white rounded" // Adjusted button margin
@@ -139,7 +237,19 @@ const Groupsmain = ({ groupid }) => {
                         const amount = document.getElementById(
                           `amountInput-${index}`
                         ).value;
-                        RequestMoney(currUser, user.email, groupId, amount);
+                        const Note = document.getElementById(
+                          `ForInput-${index}`
+                        ).value;
+                        RequestMoney(
+                          currUser,
+                          user.email,
+                          groupId,
+                          amount,
+                          Note
+                        );
+                        document.getElementById(`amountInput-${index}`).value =
+                          "";
+                        document.getElementById(`ForInput-${index}`).value = "";
                       }}
                     >
                       Request
