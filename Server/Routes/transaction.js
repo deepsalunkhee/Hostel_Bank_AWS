@@ -8,7 +8,7 @@ const { verifyUser, AutheriseUser } = require("../Routes/auth");
 
 router.post("/request",verifyUser,async(req,res)=>{
     const{groupid,requestfrom,requestto,amount,note}=req.body;
-    console.log(req.body);
+    // console.log(req.body);
     
 
     try {
@@ -54,7 +54,7 @@ router.post("/request",verifyUser,async(req,res)=>{
 
 router.post("/settle",verifyUser,async(req,res)=>{
     const{groupid,requestfrom,requestto,amount,type}=req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         
         const group=await Group.findById(groupid);

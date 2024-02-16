@@ -4,6 +4,9 @@ const connectDB = require('./db/connection');
 const UserRouter = require('./Routes/users');
 const GroupRouter=require('./Routes/groups')
 const TransactionRouter=require('./Routes/transaction')
+const NotificationRouter=require('./Routes/notifications')
+const HistoryRouter=require('./Routes/history')
+
 
 
 
@@ -21,6 +24,8 @@ connectDB();
 app.use('/users', UserRouter );
 app.use('/groups',GroupRouter);
 app.use('/transaction',TransactionRouter);
+app.use('/notification',NotificationRouter);
+app.use('/history',HistoryRouter);
 
 
 

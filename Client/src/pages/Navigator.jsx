@@ -4,6 +4,7 @@ import JoinGroup from "./JoinGroup";
 import Profile from "./Profile";
 import Groups from "./Groups";
 import History from "./History";
+import Notification from "./Notification";
 
 const Navigator = () => {
   const [selectedMenu, setSelectedMenu] = useState("Notifications");
@@ -90,7 +91,7 @@ const Navigator = () => {
       {/* Content Section */}
       <div className="bg-blue-200 col-span-5 p-4 overflow-y-auto">
         {/* logic that changes the page according to selected menu*/}
-        {selectedMenu === "Notifications" && <h1>Notifications</h1>}
+        {selectedMenu === "Notifications" && <Notification/>}
         {selectedMenu === "Groups" && <Groups />}
         {selectedMenu === "Profile" && <Profile />}
         {selectedMenu === "History" && <History />}

@@ -21,15 +21,73 @@ const userSchema = new mongoose.Schema({
             required: false
         }
     }],
-    notification: [{
-        type: {
-            type: String,
-            required: false
+    notifications: [{
+       
+        Read:{
+            type:Boolean,
+            default:false,
+            required:true
         },
-        status: {
-            type: Boolean,
-            required: false
+
+        notification_type:{
+            type:String,
+            required:true
+        },
+
+        from:{
+            type:String,
+            required:true
+        },
+
+        amount:{
+            type:Number,
+            required:true
+        
+        },
+        note:{
+            type:String,
+            required:true
+        },
+        date:{
+            type:Date,
+            required:true
+        },
+        group_name:{
+            type:String,
+            required:false,
         }
+    }],
+
+    history:[{
+        group_id:{
+            type:String,
+            required:false
+        },
+        group_name:{
+            type:String,
+            required:false
+        },
+        amount:{
+            type:Number,
+            required:true
+        },
+        note:{
+            type:String,
+            required:false
+        },
+        date:{
+            type:Date,
+            required:true
+        },
+        history_type:{
+            type:String,
+            required:true
+        },
+        with:{
+            type:String,
+            required:true
+        },
+    
     }]
 });
 
