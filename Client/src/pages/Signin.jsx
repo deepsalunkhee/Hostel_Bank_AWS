@@ -72,6 +72,15 @@ const Signin = () => {
           Signup
         </span>
       </p>
+      <p className="mt-4">
+        <span
+          onClick={() => navigate("/forgotpassword")}
+          className="text-blue-500 cursor-pointer"
+        >
+          Forgot Password
+        </span>
+      </p>
+      
     </div>
   );
 };

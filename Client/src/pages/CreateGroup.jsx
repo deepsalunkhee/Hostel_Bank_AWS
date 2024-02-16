@@ -47,9 +47,9 @@ const CreateGroup = () => {
   }
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Create Group</h1>
+      <h1 className="text-3xl font-bold mb-4">Create Group</h1>
       
-      <form onSubmit={handleOnsubmit} className="mb-6">
+      <form onSubmit={handleOnsubmit} className="mb-4">
         <label className="block mb-2">Group Name</label>
         <input
           type="text"

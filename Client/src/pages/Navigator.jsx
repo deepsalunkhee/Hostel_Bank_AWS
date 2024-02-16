@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import Groups from "./Groups";
 import History from "./History";
 import Notification from "./Notification";
+import Settings from "./Settings";
 
 const Navigator = () => {
   const [selectedMenu, setSelectedMenu] = useState("Profile");
@@ -44,7 +45,8 @@ const Navigator = () => {
             >
               <button>Groups</button>
             </li>
-            <li
+            {/* Pending part*/}
+            {/* <li
               className={`menu-button ${
                 selectedMenu === "Profile"
                   ? "bg-blue-200 text-black rounded  px-3"
@@ -53,7 +55,7 @@ const Navigator = () => {
               onClick={() => setMenu("Profile")}
             >
               <button>Profile</button>
-            </li>
+            </li> */}
             <li
               className={`menu-button ${
                 selectedMenu === "Create Groups"
@@ -84,6 +86,16 @@ const Navigator = () => {
             >
               <button>History</button>
             </li>
+            <li
+              className={`menu-button ${
+                selectedMenu === "Settings"
+                  ? "bg-blue-200 text-black rounded  px-3"
+                  : "bg-blue-500 text-white  hover:bg-blue-100  hover:text-amber-900 hover:rounded  px-3"
+              }`}
+              onClick={() => setMenu("Settings")}
+            >
+              <button>Settings</button>
+            </li>
           </ul>
         </div>
       </div>
@@ -93,10 +105,12 @@ const Navigator = () => {
         {/* logic that changes the page according to selected menu*/}
         {selectedMenu === "Notifications" && <Notification/>}
         {selectedMenu === "Groups" && <Groups />}
-        {selectedMenu === "Profile" && <Profile />}
+        {/* Pending part*/}
+        {/* {selectedMenu === "Profile" && <Profile />} */}
         {selectedMenu === "History" && <History />}
         {selectedMenu === "Join Groups" && <JoinGroup />}
         {selectedMenu === "Create Groups" && <CreateGroup />}
+        {selectedMenu === "Settings" &&  <Settings/>}
       </div>
     </div>
   );

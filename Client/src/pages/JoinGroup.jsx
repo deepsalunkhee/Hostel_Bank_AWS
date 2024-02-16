@@ -42,8 +42,9 @@ const JoinGroup = () => {
   return (
     <div>
       <form  onSubmit={hadleOnsubmit}>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col p-4">
           <h1 className="text-3xl font-bold mb-4">Join Group</h1>
+          
           <input
             type="text"
             className="p-2 mb-4 w-80 border-2 border-gray-500 rounded-lg"
@@ -51,7 +52,7 @@ const JoinGroup = () => {
             onChange={(e)=>{setGroupid(e.target.value)}}
           />
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+            className="bg-blue-500 w-80 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
             type="submit"
           >
             Join
