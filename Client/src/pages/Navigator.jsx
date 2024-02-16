@@ -8,7 +8,7 @@ import Notification from "./Notification";
 import Settings from "./Settings";
 
 const Navigator = () => {
-  const [selectedMenu, setSelectedMenu] = useState("Profile");
+  const [selectedMenu, setSelectedMenu] = useState("Notifications");
 
   const setMenu = (section) => {
     setSelectedMenu(section);
