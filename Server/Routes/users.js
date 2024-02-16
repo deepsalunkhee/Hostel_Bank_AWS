@@ -25,7 +25,7 @@ const signupSchema = zod.object({
 
 const signinSchema = zod.object({
     email:zod.string().email(),
-    password:zod.string().min(6).max(50)
+    password:zod.string().min(4).max(50)
 })
 
 //signup route
