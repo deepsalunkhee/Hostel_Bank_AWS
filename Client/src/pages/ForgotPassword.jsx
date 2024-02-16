@@ -54,7 +54,7 @@ const ForgotPassword = () => {
                 Submit
               </button>
             </form>
-            {sent && <p className="mt-4 text-green-500">If this email has an account, a password reset link will be sent.</p>}
+            {sent && <p className="mt-4 text-green-500">If this email has an account, a new password is sent to this email</p>}
           </div>
         </div>
       );

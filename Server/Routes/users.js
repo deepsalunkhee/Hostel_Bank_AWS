@@ -184,7 +184,7 @@ router.post("/forgotpassword",async(req,res)=>{
       let info = await transporter.sendMail({
         from: "deepsalunkhee@gmail.com", // Sender address
         to: `${email}`, // Recipient's email
-        subject: "You got a Notification", // Subject line
+        subject: "Password Changed", // Subject line
         text: emailContent, // Plain text body
       });
 
