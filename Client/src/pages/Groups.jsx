@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
   const [groups, setGroups] = useState([]);
-  const backendUrl = "http://localhost:5000";
+  const backendUrl = "https://hostel-bank-be-deepsalunkhee.vercel.app";
   const navigate = useNavigate();
 
   useEffect(() => {
