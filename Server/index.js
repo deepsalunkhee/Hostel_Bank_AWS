@@ -6,6 +6,7 @@ const GroupRouter=require('./Routes/groups')
 const TransactionRouter=require('./Routes/transaction')
 const NotificationRouter=require('./Routes/notifications')
 const HistoryRouter=require('./Routes/history')
+const emailnotificationsRouter=require('./Routes/emailnotifications')
 
 
 
@@ -26,6 +27,7 @@ app.use('/groups',GroupRouter);
 app.use('/transaction',TransactionRouter);
 app.use('/notification',NotificationRouter);
 app.use('/history',HistoryRouter);
+app.use('/emailnotifications',emailnotificationsRouter);
 
 
 

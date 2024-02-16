@@ -11,6 +11,7 @@ const Navbar = ({ user }) => {
 
     const handleSignOut = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("email");
         window.location.reload();
     }
 
