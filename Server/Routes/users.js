@@ -7,6 +7,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const {verifyUser} = require("../Routes/auth");
+const nodemailer = require("nodemailer");
+const e = require("express");
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -110,5 +112,92 @@ router.get("/userdata",verifyUser,async(req,res)=>{
   
    
 })
+
+router.post("/changepassword",verifyUser,async(req,res)=>{
+    const {oldPassword,newPassword,confirmPassword,email}=req.body;
+    console.log(req.body);
+    try{
+    
+    const user=await User.findOne({email:email});
+    
+    const isPasswordCorrect=bcrypt.compareSync(oldPassword,user.passwordHash);
+    console.log(isPasswordCorrect);
+    if(!isPasswordCorrect){
+        return res.status(400).json({error:"Old Password is incorrect"});
+    }
+    const hashedPassword = bcrypt.hashSync(newPassword, salt);
+    user.passwordHash=hashedPassword;
+    await user.save();
+    res.status(200).json({message:"Password Changed"});
+    console.log("password changed");
+    }
+    catch(error){
+        res.status(500).json({error:"Internal server error"});
+    }
+});
+
+router.post("/forgotpassword",async(req,res)=>{
+    const {email}=req.body;
+    // console.log(req.body);
+    try{
+        const user=await User.findOne({email:email});
+        // console.log(user);
+        if(!user){
+            return res.status(400).json({error:"User does not exist"});
+        }
+        //create a 8 digit random password
+        const randomPassword=Math.random().toString(36).slice(-8);
+        const hashedPassword = bcrypt.hashSync(randomPassword, salt);
+        user.passwordHash=hashedPassword;
+        await user.save();
+      
+
+        //sendign mail
+
+
+        // nodemailer transporter (for the credentials and authorization)
+      // using Brevo for SMTP (visit its documentation for more details)
+      let transporter = nodemailer.createTransport({
+        host: "smtp-relay.brevo.com",
+        port: 587,
+        // true for 465, false for other ports
+        auth: {
+          user: process.env.EMAIL_USER, // Your Brevo email
+          pass: process.env.EMAIL_PASS, // Your Brevo password
+        },
+      });
+
+      // HTML and CSS content for the email
+      const emailContent = `
+      
+            <p>Hello ${email},</p>
+            <p class="thank-you">Password has been Changed</p>
+            <p>Your new password is ${randomPassword}</p>
+            <a class="button" href="http://localhost:5173">Click Here To Login</a>
+        
+      
+    `;
+
+      //
+
+      // sending email and providing data (what to send, whom to send, etc)
+      let info = await transporter.sendMail({
+        from: "deepsalunkhee@gmail.com", // Sender address
+        to: `${email}`, // Recipient's email
+        subject: "You got a Notification", // Subject line
+        text: emailContent, // Plain text body
+      });
+
+      res.status(200).json({message:"Password changed successfully"});
+    }
+    catch(error){
+        res.status(500).json({error:error.message});
+    }
+
+    
+    
+    
+}
+)
 
 module.exports = router;
