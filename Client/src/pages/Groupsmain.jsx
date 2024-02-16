@@ -107,6 +107,23 @@ const Groupsmain = ({ groupid }) => {
         })
 
         //console.log(send_notification);
+        const email_notification =await axios(`${baseUrl}/emailnotifications/send`,{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+            token:token
+          },
+          data:{
+            groupid:groupid,
+            from:from,
+            to:to,
+            amount:amount,
+            type:type
+          }
+        })
+
+        console.log(email_notification);
+        
         
       } catch (error) {
         console.log(error);
@@ -184,7 +201,24 @@ const Groupsmain = ({ groupid }) => {
               }
             })
 
-            console.log(addHistory);
+            //console.log(addHistory);
+
+            const email_notification =await axios(`${baseUrl}/emailnotifications/send`,{
+              method:"POST",
+              headers:{
+                "Content-Type":"application/json",
+                token:token
+              },
+              data:{
+                groupid:groupid,
+                from:from,
+                to:to,
+                amount:amount,
+                type:type
+              }
+            })
+
+            console.log(email_notification);
             
           } catch (error) {
             console.log(error);
