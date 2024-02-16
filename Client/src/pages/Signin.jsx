@@ -1,44 +1,38 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
-
-  const backend="http://localhost:5000"
+  const backend = "http://localhost:5000";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   // Logic for signing in
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const body={
+    const body = {
       email,
-      password
+      password,
+    };
+
+    try {
+      const signinres = await axios(`${backend}/users/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(body),
+      });
+
+      //store the token in local storage
+      localStorage.setItem("token", signinres.data.token);
+      navigate("/");
+      //redirect to the dashboard page
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.response.data.error);
     }
-
-    try{
-
-    const signinres= await axios(`${backend}/users/signin`,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      data:JSON.stringify(body),
-    })
-
-    //store the token in local storage
-    localStorage.setItem("token",signinres.data.token)
-    navigate("/")
-    //redirect to the dashboard page
-    
-  }catch(error){
-    console.error("Error:", error);
-    alert(error.response.data.error)
-  
-  }
-    
   };
 
   return (
@@ -69,6 +63,15 @@ const Signin = () => {
           Sign in
         </button>
       </form>
+      <p className="mt-4">
+        Don't have an account?{" "}
+        <span
+          onClick={() => navigate("/signup")}
+          className="text-blue-500 cursor-pointer"
+        >
+          Signup
+        </span>
+      </p>
     </div>
   );
 };
