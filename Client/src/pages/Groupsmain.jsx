@@ -58,7 +58,7 @@ const Groupsmain = ({ groupid }) => {
     } catch (error) {}
   };
 
-  const RequestMoney = async (from, to, groupid, amount, note) => {
+  const RequestMoney = async (from, to, groupid, amount, note,type) => {
     //chek if ampunt is a number
     if (isNaN(amount) || amount <= 0 || amount === "" || note === "") {
       alert("Please enter a valid amount and Note");
@@ -87,6 +87,26 @@ const Groupsmain = ({ groupid }) => {
       fetchdata();
       //sending notification logic
       try {
+
+        const send_notification =await axios(`${baseUrl}/notification/send`,{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+            token:token
+          },
+          data:{
+            groupid:groupid,
+            from:from,
+            to:to,
+            amount:amount,
+            note:note,
+            type:type
+          }
+
+          
+        })
+
+        //console.log(send_notification);
         
       } catch (error) {
         console.log(error);
@@ -124,8 +144,47 @@ const Groupsmain = ({ groupid }) => {
 
         if (settle.status === 200) {
           fetchdata();
-          //sending notification logic
+          //sending notification logic and add to history
           try {
+
+            const send_notification =await axios(`${baseUrl}/notification/send`,{
+              method:"POST",
+              headers:{
+                "Content-Type":"application/json",
+                token:token
+              },
+              data:{
+                groupid:groupid,
+                from:from,
+                to:to,
+                amount:amount,
+                note:"settled",
+                type:type
+              }
+
+              
+            })
+
+            //console.log(send_notification);
+
+            const addHistory= await axios(`${baseUrl}/history/add`,{
+              method:"POST",
+              headers:{
+                "Content-Type":"application/json",
+                token:token
+              },
+              data:{
+                groupid:groupid,
+                from:from,
+                to:to,
+                amount:amount,
+                type:type
+
+
+              }
+            })
+
+            console.log(addHistory);
             
           } catch (error) {
             console.log(error);
@@ -245,7 +304,8 @@ const Groupsmain = ({ groupid }) => {
                           user.email,
                           groupId,
                           amount,
-                          Note
+                          Note,
+                          "Request"
                         );
                         document.getElementById(`amountInput-${index}`).value =
                           "";
