@@ -173,7 +173,7 @@ router.post("/forgotpassword",async(req,res)=>{
             <p>Hello ${email},</p>
             <p class="thank-you">Password has been Changed</p>
             <p>Your new password is ${randomPassword}</p>
-            <a class="button" href="http://localhost:5173">Click Here To Login</a>
+            <a class="button" href="https://hostel-bank.vercel.app/">Click Here To Login</a>
         
       
     `;

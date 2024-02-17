@@ -33,7 +33,7 @@ router.post("/send",verifyUser,async(req,res)=>{
             <p>Notification type: ${type === "toGive" || type === "toTake" ? "Settlement" : "Request"}</p>
             <!-- Add any additional message or content here -->
             <p class="message">Please review the notification and take appropriate action.</p>
-            <a class="button" href="http://localhost:5173">Click Here To Login</a>
+            <a class="button" href="https://hostel-bank.vercel.app/">Click Here To Login</a>
         
       
     `;
