@@ -8,9 +8,13 @@ const NotificationRouter = require("./Routes/notifications");
 const HistoryRouter = require("./Routes/history");
 const emailnotificationsRouter = require("./Routes/emailnotifications");
 
+
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 
 // Connect to MongoDB
 async function startserver() {
