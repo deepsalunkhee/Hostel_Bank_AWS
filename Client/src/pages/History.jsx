@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect,useState } from 'react'
 
 const History = () => {
-  const baseurl = "https://hostel-bank-be-deepsalunkhee.vercel.app";
+  const baseurl =  import.meta.env.VITE_BASE;
 
   const [history, setHistory] = useState([]);
 

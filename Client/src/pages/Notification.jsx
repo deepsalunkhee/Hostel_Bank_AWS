@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const Notification = () => {
-  const baseurl = "https://hostel-bank-be-deepsalunkhee.vercel.app";
+  const baseurl =  import.meta.env.VITE_BASE;
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {

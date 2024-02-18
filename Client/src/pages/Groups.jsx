@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
   const [groups, setGroups] = useState([]);
-  const backendUrl = "https://hostel-bank-be-deepsalunkhee.vercel.app";
+  const backendUrl =  import.meta.env.VITE_BASE;
   const navigate = useNavigate();
 
   useEffect(() => {

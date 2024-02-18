@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
 const Signup = () => {
-  const backend = "https://hostel-bank-be-deepsalunkhee.vercel.app";
+  const backend =  import.meta.env.VITE_BASE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate=useNavigate()
